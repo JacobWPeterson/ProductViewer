@@ -14,24 +14,4 @@ const fetchData = (path, query, callback) => {
     });
 };
 
-// const createData = (path, query, callback) => {
-//   axios.post(API_URL + path, query)
-//     .then((res) => {
-//       callback(res);
-//     }).catch((err) => {
-//       throw err;
-//     });
-// };
-
-// const updateData = (path, query, callback) => {
-//   axios.put(API_URL + path, query)
-//     .then((res) => {
-//       callback(res);
-//     }).catch((err) => {
-//       throw err;
-//     });
-// };
-
 module.exports.fetchData = fetchData;
-// module.exports.createData = createData;
-// module.exports.updateData = updateData;

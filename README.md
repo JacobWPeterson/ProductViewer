@@ -1,11 +1,7 @@
 # Revamped Storefront Product Viewer
-## A Front End Design Project by
+## A Front End Design Project
 *by*
 [Jacob Peterson](https://github.com/JacobWPeterson)
-,
-[Benjamin Wu](https://github.com/benngfour)
-, and
-[Nilai Patel](https://github.com/nilaip96)
 
 ---
 
@@ -44,7 +40,7 @@ Files Responsible for can be found in:\
 
 <br>
 
-**Nilai Patel**\
+**[Nilai Patel](https://github.com/nilaip96)**\
 *Questions and Answers*\
 Files Responsible for can be found in:\
 --client/src/QnA.jsx\
@@ -52,7 +48,7 @@ Files Responsible for can be found in:\
 
 <br>
 
-**Benjamin Wu**\
+**[Benjamin Wu](https://github.com/benngfour)**\
 *Ratings and Reviews*\
 --client/src/Reviews.jsx\
 –-client/src/reviewsSubComponents

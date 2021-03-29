@@ -167,7 +167,7 @@ class ExpandedImage extends React.Component {
           </IconHolder>
         )}
       </Wrapper>,
-      document.getElementById('modal-root') || document.createElement('div'), // for testing purposes,
+      document.getElementById('modal-root') || document.createElement('div'), // for testing purposes
     );
   }
 }

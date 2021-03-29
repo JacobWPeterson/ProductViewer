@@ -57,27 +57,17 @@ const Footer = styled.div`
   background: #6d6d6d;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
   padding: .75vh;
-`;
-
-const Creators = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 50%;
-  flex: space-evenly;
 `;
 
 const FooterMessage = styled.div`
   font-size: .9rem;
   color: #fff;
   font-weight: 700;
-  margin-left: 1vw;
+  margin: 0 .5vw 0 1vw;
 `;
 
 const Creator = styled.a`
-  margin: 0 2vw;
   font-size: .9rem;
   font-weight: 400;
   color: #fff;;
@@ -97,9 +87,7 @@ class App extends React.Component {
     this.state = {
       productDetails: null,
       productStyles: null,
-      // reviews: null,
       reviewsMeta: null,
-      // questions: null,
       averageRating: 0,
     };
   }
@@ -123,7 +111,7 @@ class App extends React.Component {
         <div>
           <Lead>
             <Banner>
-              <Logo>Ninja Cobbles</Logo>
+              <Logo>Company Logo</Logo>
             </Banner>
             <Announcement>
               <Message>SAFE IN-STORE SHOPPING:</Message>
@@ -138,10 +126,8 @@ class App extends React.Component {
             reviewsMeta={this.state.reviewsMeta}
           />
           <Footer>
-            <Creators>
-              <FooterMessage>Created by:</FooterMessage>
-              <Creator href="https://github.com/JacobWPeterson" target="blank">Jacob Peterson</Creator>
-            </Creators>
+            <FooterMessage>Created by:</FooterMessage>
+            <Creator href="https://github.com/JacobWPeterson" target="blank">Jacob Peterson</Creator>
           </Footer>
         </div>
       );
