@@ -1,11 +1,11 @@
-# Ninja Cobbles Storefront <sup id="a1">[1](#f1)</sup>
-## A Project for Hack Reactor SF133
+# Revamped Storefront Product Viewer
+## A Front End Design Project by
 *by*
-[Benjamin Wu](https://github.com/benngfour/PPFEC)
+[Jacob Peterson](https://github.com/JacobWPeterson)
 ,
-[Jacob Peterson](https://github.com/JacobWPeterson/PPFEC)
+[Benjamin Wu](https://github.com/benngfour)
 , and
-[Nilai Patel](https://github.com/nilaip96/PPFEC)
+[Nilai Patel](https://github.com/nilaip96)
 
 ---
 
@@ -29,9 +29,12 @@ Valid URL Endpoints
 ---
 
 ## Overview
-For our front-end capstone project at Hack Reactor our team was tasked with building a product page for a ficticious store. An API had been created that contained all of the data we would need, but from there everything from server, to client-side, to final design was up to us. One constraint on the project was that we could not rely on external NPM modules or libraries to impement elements, such as an image carousel or infinite scroll.
+The code contained in this repository was my responsibility, but fits within and cooperates with a larger code base discussed below in [Context](https://github.com/JacobWPeterson/ProductViewer#Context).
 
-Our team divided responsibilities as follows:
+An existing API served all of the data needed for the online storefront, but from there everything from server, to client-side, to final design was up to me. One constraint on the project was that we could not rely on external NPM modules or libraries to impement elements, such as an image carousel or infinite scroll.
+
+## Context
+This is part of a larger project that can be found [here](https://github.com/Pivitol-Penguins/PPFEC). The larger project included a questions and answers section and a reviews and ratings section. Our team divided these responsibilities as follows, with the file paths corresponding to the team repository.
 
 **Jacob Peterson**\
 *Product Overview*\
@@ -59,9 +62,3 @@ Files Responsible for can be found in:\
 <br>
 
 ---
-
-
-
-
-
-<b id="f1">1</b> Ninja Cobbles is an anagram of Ben, Jacob, and Nils. [↩](#a1)
