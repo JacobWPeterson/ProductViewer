@@ -1,5 +1,5 @@
 # Revamped Storefront Product Viewer
-## A Front End Design Project by
+## A Front End Design Project
 *by*
 [Jacob Peterson](https://github.com/JacobWPeterson)
 
