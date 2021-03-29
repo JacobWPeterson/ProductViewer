@@ -1,9 +1,7 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Product from './Product.jsx';
-const QnA = React.lazy(() => import('./QnA.jsx'));
-const Reviews = React.lazy(() => import('./Reviews.jsx'));
 
 const Lead = styled.div`
   font-family: 'Lato', sans-serif;
@@ -85,13 +83,6 @@ const Creator = styled.a`
   color: #fff;;
 `;
 
-const Copyright = styled.div`
-  font-size: .9rem;
-  font-weight: 400;
-  color: #fff;
-  margin-right: 2vw;
-`;
-
 const Link = styled.a`
   margin-left: .5vw;
   font-size: .9rem;
@@ -106,9 +97,9 @@ class App extends React.Component {
     this.state = {
       productDetails: null,
       productStyles: null,
-      reviews: null,
+      // reviews: null,
       reviewsMeta: null,
-      questions: null,
+      // questions: null,
       averageRating: 0,
     };
   }
@@ -120,10 +111,8 @@ class App extends React.Component {
         this.setState({
           productDetails: res.data[0],
           productStyles: res.data[1],
-          reviews: res.data[2],
-          reviewsMeta: res.data[3],
-          questions: res.data[4],
-        }, this.averageRatingGetter);
+          reviewsMeta: res.data[2],
+        });
       })
       .catch((err) => { throw err; });
   }
@@ -148,23 +137,11 @@ class App extends React.Component {
             averageRating={this.state.averageRating}
             reviewsMeta={this.state.reviewsMeta}
           />
-          <Suspense fallback={<div>Loading...</div>}>
-            <QnA questions={this.state.questions} name={this.state.productDetails.name} />
-          </Suspense>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Reviews
-              reviews={this.state.reviews}
-              reviewsMeta={this.state.reviewsMeta}
-            />
-          </Suspense>
           <Footer>
             <Creators>
               <FooterMessage>Created by:</FooterMessage>
-              <Creator href="https://github.com/benngfour" target="blank">Benjamin Wu</Creator>
               <Creator href="https://github.com/JacobWPeterson" target="blank">Jacob Peterson</Creator>
-              <Creator href="https://github.com/nilaip96" target="blank">Nilai Patel</Creator>
             </Creators>
-            <Copyright>PPFEC ©2021</Copyright>
           </Footer>
         </div>
       );
@@ -174,27 +151,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-
-
-
-// const Interaction = (Child) => {
-//   return class TrackInteraction extends React.Component {
-//     constructor() {
-//       super();
-//       this.state = {
-//         componentName: '',
-//         time: '',
-//         element: '',
-//       }
-//       this.handleClickComponent = this.handleClickComponent.bind(this);
-//     }
-
-
-
-//     render() {
-//       return <Child onClick={this.handleClickComponent} {...this.props} />
-//     }
-//   }
-// }

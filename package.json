@@ -1,7 +1,7 @@
 {
   "name": "ppfec",
   "version": "1.0.0",
-  "description": "This is the greatest front end capstone project EVER",
+  "description": "A revamped product viewer for an online retailer",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
@@ -11,18 +11,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Pivitol-Penguins/PPFEC.git"
+    "url": "git+https://github.com/JacobWPeterson/ProductViewer.git"
   },
   "keywords": [
-    "BEST",
-    "EVER"
+    "front-end",
+    "react"
   ],
-  "author": "JP, BW, NP",
+  "author": "Jacob Peterson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Pivitol-Penguins/PPFEC/issues"
+    "url": "https://github.com/JacobWPeterson/ProductViewer/issues"
   },
-  "homepage": "https://github.com/Pivitol-Penguins/PPFEC#readme",
+  "homepage": "https://github.com/JacobWPeterson/ProductViewer#readme",
   "devDependencies": {
     "@babel/core": "^7.13.1",
     "@babel/preset-env": "^7.13.5",
@@ -44,7 +44,6 @@
     "jest": "^26.6.3",
     "jest-enzyme": "^7.1.2",
     "jest-styled-components": "^7.0.3",
-    "lodash": "^4.17.21",
     "react-test-renderer": "^16.14.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.5.0"
@@ -52,7 +51,6 @@
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",
-    "multiparty": "^4.2.2",
     "nodemon": "^2.0.7",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

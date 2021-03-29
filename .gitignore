@@ -1,0 +1,7 @@
+config
+node_modules
+client/dist/bundle.js
+coverage
+tests/__snapshots__
+package-lock.json
+PPFEC-2.pem
