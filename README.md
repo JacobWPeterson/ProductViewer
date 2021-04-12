@@ -20,18 +20,18 @@ An existing API served all of the data needed for the online storefront, but fro
 ## Screengrabs
 
 ### Main Product Overview Desktop
-<img align="center" src="https://github.com/JacobWPeterson/Viewer/blob/main/README_images/Viewer_1.jpeg" alt="made product overview" width=550px/>
+<img align="center" src="https://github.com/JacobWPeterson/Viewer/blob/main/README_images/Viewer_1.jpeg" alt="made product overview" width=1100px/>
 
 ### Expanded Image Viewer
-<img align="center" src="https://github.com/JacobWPeterson/Viewer/blob/main/README_images/Viewer_2.jpeg" alt="made product overview" width=550px/>
+<img align="center" src="https://github.com/JacobWPeterson/Viewer/blob/main/README_images/Viewer_2.jpeg" alt="made product overview" width=1100px/>
 
 ### Main Product Overview Mobile
-<img align="center" src="https://github.com/JacobWPeterson/Viewer/blob/main/README_images/Viewer_3.jpeg" alt="made product overview" width=550px/>
+<img align="center" src="https://github.com/JacobWPeterson/Viewer/blob/main/README_images/Viewer_3.jpeg" alt="made product overview" width=350px/>
 
+---
 ## Context
 This is part of a larger project that can be found [here](https://github.com/Pivitol-Penguins/PPFEC). The larger project included a questions and answers section and a reviews and ratings section. Our team divided these responsibilities as follows, with the file paths corresponding to the team repository.
 
----
 **Jacob Peterson**\
 *Product Overview*\
 Files Responsible for can be found in:\
