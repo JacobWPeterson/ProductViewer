@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+
 import Product from './Product.jsx';
 
 const Lead = styled.div`
@@ -82,20 +83,22 @@ const Link = styled.a`
 `;
 
 const App = () => {
-  const [productDetails, setProductDetails] = useState(null);
-  const [productStyles, setProductStyles] = useState(null);
-  const [reviewsMeta, setReviewsMeta] = useState(null);
+  const [fetchedData, setFetchedData] = useState({
+    productDetails: null, productStyles: null, reviewsMeta: null,
+  });
 
   useEffect(() => {
     const path = window.location.pathname;
     axios.get(path.slice(-6))
       .then((res) => {
-        setProductDetails(res.data[0]);
-        setProductStyles(res.data[1]);
-        setReviewsMeta(res.data[2]);
+        setFetchedData({
+          productDetails: res.data[0], productStyles: res.data[1], reviewsMeta: res.data[2],
+        });
       })
       .catch((err) => { throw err; });
-  });
+  }, []);
+
+  const { productDetails, productStyles, reviewsMeta } = fetchedData;
 
   return (
     <div>
@@ -108,7 +111,7 @@ const App = () => {
           <Link href="https://www.cdc.gov/coronavirus/2019-ncov/communication/guidance.html" target="blank">Our safety practices to help keep you healthy</Link>
         </Announcement>
       </Lead>
-      {reviewsMeta
+      {reviewsMeta !== null
       && (
       <Product
         productDetails={productDetails}
