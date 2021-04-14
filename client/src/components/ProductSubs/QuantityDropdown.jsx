@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FontAwesome from 'react-fontawesome';
 import styled from 'styled-components';
 
@@ -73,78 +73,61 @@ const DDListItem = styled.button`
   };
 `;
 
-class QuantityDropdown extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isListOpen: false,
-      headerTitle: this.props.title,
-    };
-    this.toggleList = this.toggleList.bind(this);
-    this.selectItem = this.selectItem.bind(this);
-    this.close = this.close.bind(this);
-  }
+const QuantityDropdown = (props) => {
+  const {
+    available, list, resetThenSet, title,
+  } = props;
+  const [isListOpen, setListStatus] = useState(false);
+  const [headerTitle, setHeaderTitle] = useState(title);
 
-  componentDidUpdate() {
-    const { isListOpen } = this.state;
+  const close = () => {
+    setListStatus(false);
+  };
+
+  useEffect(() => {
     setTimeout(() => {
       if (isListOpen) {
-        window.addEventListener('click', this.close);
+        window.addEventListener('click', close);
       } else {
-        window.removeEventListener('click', this.close);
+        window.removeEventListener('click', close);
       }
     }, 0);
-  }
+  });
 
-  toggleList() {
-    this.setState((prevState) => ({
-      isListOpen: !prevState.isListOpen,
-    }));
-  }
+  const toggleList = () => {
+    setListStatus(!isListOpen);
+  };
 
-  selectItem(item) {
-    const { resetThenSet } = this.props;
-    this.setState({
-      headerTitle: item,
-      isListOpen: false,
-    }, () => resetThenSet(item));
-  }
+  const selectItem = (item) => {
+    setHeaderTitle(item);
+    setListStatus(false);
+    resetThenSet(item);
+  };
 
-  close() {
-    this.setState({
-      isListOpen: false,
-    });
-  }
+  return (
+    <DDWrapper>
 
-  render() {
-    const { isListOpen, headerTitle } = this.state;
-    const { list } = this.props;
+      <DDHeader onClick={toggleList}>
+        <DDHeaderTitle>{headerTitle}</DDHeaderTitle>
+        {isListOpen
+          ? <FontAwesome name="angle-up" size="2x" />
+          : <FontAwesome name="angle-down" size="2x" />}
+      </DDHeader>
 
-    return (
-      <DDWrapper>
+      {isListOpen && (
+      <DDList role="list">
+        {list.map((item) => (
+          item - 1 < available && (
+          <DDListItem type="button" key={item} onClick={() => selectItem(item)}>
+            {item}
+          </DDListItem>
+          )
+        ))}
+      </DDList>
+      )}
 
-        <DDHeader onClick={this.toggleList}>
-          <DDHeaderTitle>{headerTitle}</DDHeaderTitle>
-          {isListOpen
-            ? <FontAwesome name="angle-up" size="2x" />
-            : <FontAwesome name="angle-down" size="2x" />}
-        </DDHeader>
-
-        {isListOpen && (
-          <DDList role="list">
-            {list.map((item) => (
-              item - 1 < this.props.available && (
-              <DDListItem type="button" key={item} onClick={() => this.selectItem(item)}>
-                {item}
-              </DDListItem>
-              )
-            ))}
-          </DDList>
-        )}
-
-      </DDWrapper>
-    );
-  }
-}
+    </DDWrapper>
+  );
+};
 
 export default QuantityDropdown;
