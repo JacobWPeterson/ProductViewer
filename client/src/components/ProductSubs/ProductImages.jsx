@@ -131,7 +131,6 @@ class ProductImages extends React.Component {
   }
 
   render() {
-    // console.log(this.props.images)
     return (
       <Wrapper>
 
