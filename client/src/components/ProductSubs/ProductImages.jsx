@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import FontAwesome from 'react-fontawesome';
 
@@ -61,115 +61,89 @@ const ModalBackground = styled.div`
   background-color: #42424275;
 `;
 
-class ProductImages extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: 0,
-      start: 0,
-      end: 4,
-      isModalOpen: false,
-    };
-    this.clickNavHandler = this.clickNavHandler.bind(this);
-    this.clickedThumb = this.clickedThumb.bind(this);
-    this.indexUpdater = this.indexUpdater.bind(this);
-    this.indexChecker = this.indexChecker.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
-  }
+const ProductImages = (props) => {
+  const { id, images } = props;
 
-  clickNavHandler(event) {
+  const [isModalOpen, setModalState] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [range, setRange] = useState({ start: 0, end: 4 });
+
+  const { start, end } = range;
+
+  const indexChecker = () => {
+    if (index < 5) {
+      setRange({ start: 0, end: 4 });
+    } else if (images.length - index <= 5) {
+      setRange({ start: images.length - 5, end: images.length - 1 });
+    } else if (index < start) {
+      setRange({ start: index, end: index + 4 });
+    } else if (index > end) {
+      setRange({ start: index - 4, end: index });
+    }
+  };
+
+  const clickNavHandler = (event) => {
     const direction = Number(event.target.id);
-    if (this.state.index + direction >= 0
-      && this.state.index + direction < this.props.images.length) {
-      this.setState((prevState) => ({ index: prevState.index + direction }),
-        () => this.indexChecker());
+    if (index + direction >= 0
+      && index + direction < images.length) {
+      setIndex(index + direction);
+      indexChecker();
     }
-  }
+  };
 
-  clickedThumb(index) {
-    this.setState({ index: Number(index) });
-  }
+  const clickedThumb = (ind) => {
+    setIndex(Number(ind));
+  };
 
-  indexUpdater(amount) {
-    if (this.state.start + amount >= 0
-      && this.state.end + amount < this.props.images.length) {
-      this.setState((prevState) => ({
-        start: prevState.start + amount,
-        end: prevState.end + amount,
-      }));
+  const indexUpdater = (amount) => {
+    if (start + amount >= 0
+      && end + amount < images.length) {
+      setRange({ start: start + amount, end: end + amount });
     }
-  }
+  };
 
-  indexChecker() {
-    if (this.state.index < 5) {
-      this.setState({
-        start: 0,
-        end: 4,
-      });
-    } else if (this.props.images.length - this.state.index <= 5) {
-      this.setState({
-        start: this.props.images.length - 5,
-        end: this.props.images.length - 1,
-      });
-    } else if (this.state.index < this.state.start) {
-      this.setState((prevState) => ({
-        start: prevState.index,
-        end: prevState.index + 4,
-      }));
-    } else if (this.state.index > this.state.end) {
-      this.setState((prevState) => ({
-        start: prevState.index - 4,
-        end: prevState.index,
-      }));
-    }
-  }
+  const toggleModal = () => {
+    setModalState(!isModalOpen);
+  };
 
-  toggleModal() {
-    this.setState((prevState) => ({
-      isModalOpen: !prevState.isModalOpen,
-    }));
-  }
+  return (
+    <Wrapper>
 
-  render() {
-    return (
-      <Wrapper>
+      {index !== 0 && <LeftArrow onClick={clickNavHandler}><FontAwesome id="-1" name="angle-left" size="2x" /></LeftArrow> }
 
-        {this.state.index !== 0 && <LeftArrow onClick={this.clickNavHandler}><FontAwesome id="-1" name="angle-left" size="2x" /></LeftArrow> }
+      <ViewerThumbnails
+        viewerIndex={index}
+        start={start}
+        end={end}
+        indexUpdater={indexUpdater}
+        images={images}
+        clickedThumb={clickedThumb}
+        id={id}
+        alt=""
+      />
 
-        <ViewerThumbnails
-          viewerIndex={this.state.index}
-          start={this.state.start}
-          end={this.state.end}
-          indexUpdater={this.indexUpdater}
-          images={this.props.images}
-          clickedThumb={this.clickedThumb}
-          id={this.props.id}
-          alt=""
+      <Image onClick={toggleModal} src={images[index].url} key={id} alt="style photograph" />
+
+      {isModalOpen && (
+      <ModalBackground onMouseDown={toggleModal}>
+        <ExpandedImage
+          src={images[index].url}
+          id={id}
+          alt="style photograph"
+          isModalOpen={isModalOpen}
+          toggleModal={toggleModal}
+          serial={index}
+          images={images}
+          clickNavHandler={clickNavHandler}
+          clickedThumb={clickedThumb}
         />
+      </ModalBackground>
+      )}
 
-        <Image onClick={this.toggleModal} src={this.props.images[this.state.index].url} key={this.props.id} alt="style photograph" />
+      {index !== images.length - 1 && <RightArrow onClick={clickNavHandler}><FontAwesome id="1" name="angle-right" size="2x" /></RightArrow> }
 
-        {this.state.isModalOpen && (
-          <ModalBackground onMouseDown={this.toggleModal}>
-            <ExpandedImage
-              src={this.props.images[this.state.index].url}
-              id={this.props.id}
-              alt="style photograph"
-              isModalOpen={this.state.isModalOpen}
-              toggleModal={this.toggleModal}
-              serial={this.state.index}
-              images={this.props.images}
-              clickNavHandler={this.clickNavHandler}
-              clickedThumb={this.clickedThumb}
-            />
-          </ModalBackground>
-        )}
-
-        {this.state.index !== this.props.images.length - 1 && <RightArrow onClick={this.clickNavHandler}><FontAwesome id="1" name="angle-right" size="2x" /></RightArrow> }
-
-      </Wrapper>
-    );
-  }
-}
+    </Wrapper>
+  );
+};
 
 export default ProductImages;
