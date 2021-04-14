@@ -1,7 +1,6 @@
-import React from 'react';
-import FontAwesome from 'react-fontawesome';
-
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import FontAwesome from 'react-fontawesome';
 
 const DDWrapper = styled.div`
   position: relative;
@@ -73,78 +72,58 @@ const DDListItem = styled.button`
   };
 `;
 
-class SizeDropdown extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isListOpen: false,
-      headerTitle: this.props.title,
-    };
-    this.toggleList = this.toggleList.bind(this);
-    this.selectItem = this.selectItem.bind(this);
-    this.close = this.close.bind(this);
-  }
+const SizeDropdown = (props) => {
+  const {
+    list, resetThenSet, title,
+  } = props;
+  const [isListOpen, setListStatus] = useState(false);
+  const [headerTitle, setHeaderTitle] = useState(title);
 
-  componentDidUpdate() {
-    const { isListOpen } = this.state;
-    setTimeout(() => {
-      if (isListOpen) {
-        window.addEventListener('click', this.close);
-      } else {
-        window.removeEventListener('click', this.close);
-      }
-    }, 0);
-  }
+  const close = () => {
+    setListStatus(false);
+  };
 
-  toggleList() {
-    this.setState((prevState) => ({
-      isListOpen: !prevState.isListOpen,
-    }));
-  }
+  useEffect(() => {
+    if (isListOpen) {
+      window.addEventListener('click', close);
+      return () => window.removeEventListener('click', close);
+    }
+  });
 
-  selectItem(item) {
-    const { resetThenSet } = this.props;
-    this.setState({
-      headerTitle: item.size,
-      isListOpen: false,
-    }, () => resetThenSet(item.quantity, item.size));
-  }
+  const toggleList = () => {
+    setListStatus(!isListOpen);
+  };
 
-  close() {
-    this.setState({
-      isListOpen: false,
-    });
-  }
+  const selectItem = (item) => {
+    setHeaderTitle(item.size);
+    setListStatus(false);
+    resetThenSet(item.quantity, item.size);
+  };
 
-  render() {
-    const { isListOpen, headerTitle } = this.state;
-    const { list } = this.props;
+  return (
+    <DDWrapper>
 
-    return (
-      <DDWrapper>
+      <DDHeader onClick={toggleList}>
+        <DDHeaderTitle>{headerTitle}</DDHeaderTitle>
+        {isListOpen
+          ? <FontAwesome name="angle-up" size="2x" />
+          : <FontAwesome name="angle-down" size="2x" />}
+      </DDHeader>
 
-        <DDHeader onClick={this.toggleList}>
-          <DDHeaderTitle>{headerTitle}</DDHeaderTitle>
-          {isListOpen
-            ? <FontAwesome name="angle-up" size="2x" />
-            : <FontAwesome name="angle-down" size="2x" />}
-        </DDHeader>
+      {isListOpen && (
+      <DDList role="list">
+        {list.map((item) => (
+          item.quantity > 0 && (
+          <DDListItem type="button" key={item.size} onClick={() => selectItem(item)}>
+            {item.size}
+          </DDListItem>
+          )
+        ))}
+      </DDList>
+      )}
 
-        {isListOpen && (
-          <DDList role="list">
-            {list.map((item) => (
-              item.quantity > 0 && (
-                <DDListItem type="button" key={item.size} onClick={() => this.selectItem(item)}>
-                  {item.size}
-                </DDListItem>
-              )
-            ))}
-          </DDList>
-        )}
-
-      </DDWrapper>
-    );
-  }
-}
+    </DDWrapper>
+  );
+};
 
 export default SizeDropdown;

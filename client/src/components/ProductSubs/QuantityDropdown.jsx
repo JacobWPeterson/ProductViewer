@@ -85,13 +85,10 @@ const QuantityDropdown = (props) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isListOpen) {
-        window.addEventListener('click', close);
-      } else {
-        window.removeEventListener('click', close);
-      }
-    }, 0);
+    if (isListOpen) {
+      window.addEventListener('click', close);
+      return () => window.removeEventListener('click', close);
+    }
   });
 
   const toggleList = () => {
