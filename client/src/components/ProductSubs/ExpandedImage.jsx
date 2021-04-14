@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import FontAwesome from 'react-fontawesome';
@@ -18,8 +18,6 @@ const Wrapper = styled.div`
 
 const Expanded = styled.img`
   ${(props) => props.zoomed && 'transform: scale(2.5)'};
-  // top: ${(props) => props.y};
-  // left: ${(props) => props.x};
   background: url(${(props) => props.src}) no-repeat 0 0 fixed;
   display: block;
   max-height: 95vh;
@@ -89,87 +87,59 @@ const Icon = styled.div`
   &:hover { border: 3px solid #80ccc4; };
 `;
 
-class ExpandedImage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      zoomed: false,
-      x: 0,
-      y: 0,
-    };
-    this.expanded = React.createRef();
-    this.imageClickHandler = this.imageClickHandler.bind(this);
-    this.arrowClickHandler = this.arrowClickHandler.bind(this);
-    this.iconClickHandler = this.iconClickHandler.bind(this);
-    this.trackMouse = this.trackMouse.bind(this);
-  }
+const ExpandedImage = (props) => {
+  const {
+    alt, clickedThumb, clickNavHandler, id, images, serial, src,
+  } = props;
+  const [zoom, setZoom] = useState(false);
 
-  trackMouse() {
-    const node = this.expanded.current;
-
-    node.addEventListener('mousemove', (e) => {
-      // console.log('hello');
-      this.setState({
-        x: -e.offsetX,
-        y: -e.offsetY,
-      });
-      // node.style.setProperty('--x', `${-e.offsetX}px`);
-      // node.style.setProperty('--y', `${-e.offsetY}px`);
-    });
-  }
-
-  imageClickHandler(event) {
+  const imageClickHandler = (event) => {
     event.stopPropagation();
-    this.setState((prevState) => ({ zoomed: !prevState.zoomed }), this.trackMouse);
-  }
+    setZoom(!zoom);
+  };
 
-  arrowClickHandler(event) {
+  const arrowClickHandler = (event) => {
     event.stopPropagation();
-    this.props.clickNavHandler(event);
-  }
+    clickNavHandler(event);
+  };
 
-  iconClickHandler(event) {
+  const iconClickHandler = (event) => {
     event.stopPropagation();
-    this.props.clickedThumb(event.target.id);
-  }
+    clickedThumb(event.target.id);
+  };
 
-  render() {
-    return ReactDOM.createPortal(
-      <Wrapper>
-        {this.props.index !== 0 && !this.state.zoomed && <ModalLeftArrow onMouseDown={this.arrowClickHandler}><FontAwesome id="-1" name="angle-left" size="2x" /></ModalLeftArrow> }
-        <Expanded
-          key={this.props.id}
-          src={this.props.src}
-          alt={this.props.alt}
-          zoomed={this.state.zoomed}
-          ref={this.expanded}
-          x={this.state.x}
-          y={this.state.y}
-          onMouseDown={(event) => this.imageClickHandler(event)}
-        />
-        {this.props.index !== this.props.images.length - 1 && !this.state.zoomed && <ModalRightArrow onMouseDown={this.arrowClickHandler}><FontAwesome id="1" name="angle-right" size="2x" /></ModalRightArrow> }
-        {!this.state.zoomed
+  return ReactDOM.createPortal(
+    <Wrapper>
+      {serial !== 0 && !zoom && <ModalLeftArrow onMouseDown={arrowClickHandler}><FontAwesome id="-1" name="angle-left" size="2x" /></ModalLeftArrow> }
+      <Expanded
+        key={id}
+        src={src}
+        alt={alt}
+        zoomed={zoom}
+        onMouseDown={(event) => imageClickHandler(event)}
+      />
+      {serial !== images.length - 1 && !zoom && <ModalRightArrow onMouseDown={arrowClickHandler}><FontAwesome id="1" name="angle-right" size="2x" /></ModalRightArrow> }
+      {!zoom
         && (
           <IconHolder onMouseDown={(event) => event.stopPropagation()}>
-            {this.props.images.map((image, index) => {
-              const uniqueID = this.props.id * index;
-              if (this.props.index === index) {
+            {images.map((image, index) => {
+              const uniqueID = id * index;
+              if (serial === index) {
                 return (
-                  <SelectedIcon type="button" id={index} key={Number(uniqueID)} onMouseDown={this.iconClickHandler} />
+                  <SelectedIcon type="button" id={index} key={Number(uniqueID)} onMouseDown={iconClickHandler} />
                 );
               }
-              if (this.props.index !== index) {
+              if (serial !== index) {
                 return (
-                  <Icon type="button" id={index} key={Number(uniqueID)} onMouseDown={this.iconClickHandler} />
+                  <Icon type="button" id={index} key={Number(uniqueID)} onMouseDown={iconClickHandler} />
                 );
               }
             })}
           </IconHolder>
         )}
-      </Wrapper>,
-      document.getElementById('modal-root') || document.createElement('div'), // for testing purposes
-    );
-  }
-}
+    </Wrapper>,
+    document.getElementById('modal-root') || document.createElement('div'), // for testing purposes
+  );
+};
 
 export default ExpandedImage;
