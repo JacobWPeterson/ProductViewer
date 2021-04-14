@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Product from './Product.jsx';
@@ -81,59 +81,47 @@ const Link = styled.a`
   color: #424242;
 `;
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      productDetails: null,
-      productStyles: null,
-      reviewsMeta: null,
-      averageRating: 0,
-    };
-  }
+const App = () => {
+  const [productDetails, setProductDetails] = useState(null);
+  const [productStyles, setProductStyles] = useState(null);
+  const [reviewsMeta, setReviewsMeta] = useState(null);
 
-  componentDidMount() {
+  useEffect(() => {
     const path = window.location.pathname;
     axios.get(path.slice(-6))
       .then((res) => {
-        this.setState({
-          productDetails: res.data[0],
-          productStyles: res.data[1],
-          reviewsMeta: res.data[2],
-        });
+        setProductDetails(res.data[0]);
+        setProductStyles(res.data[1]);
+        setReviewsMeta(res.data[2]);
       })
       .catch((err) => { throw err; });
-  }
+  });
 
-  render() {
-    if (this.state.productDetails) {
-      return (
-        <div>
-          <Lead>
-            <Banner>
-              <Logo>Company Logo</Logo>
-            </Banner>
-            <Announcement>
-              <Message>SAFE IN-STORE SHOPPING:</Message>
-              <Link href="https://www.cdc.gov/coronavirus/2019-ncov/communication/guidance.html" target="blank">Our safety practices to help keep you healthy</Link>
-            </Announcement>
-          </Lead>
-
-          <Product
-            productDetails={this.state.productDetails}
-            productStyles={this.state.productStyles}
-            averageRating={this.state.averageRating}
-            reviewsMeta={this.state.reviewsMeta}
-          />
-          <Footer>
-            <FooterMessage>Created by:</FooterMessage>
-            <Creator href="https://github.com/JacobWPeterson" target="blank">Jacob Peterson</Creator>
-          </Footer>
-        </div>
-      );
-    }
-    return <div />;
-  }
-}
+  return (
+    <div>
+      <Lead>
+        <Banner>
+          <Logo>Company Logo</Logo>
+        </Banner>
+        <Announcement>
+          <Message>SAFE IN-STORE SHOPPING:</Message>
+          <Link href="https://www.cdc.gov/coronavirus/2019-ncov/communication/guidance.html" target="blank">Our safety practices to help keep you healthy</Link>
+        </Announcement>
+      </Lead>
+      {reviewsMeta
+      && (
+      <Product
+        productDetails={productDetails}
+        productStyles={productStyles}
+        reviewsMeta={reviewsMeta}
+      />
+      )}
+      <Footer>
+        <FooterMessage>Created by:</FooterMessage>
+        <Creator href="https://github.com/JacobWPeterson" target="blank">Jacob Peterson</Creator>
+      </Footer>
+    </div>
+  );
+};
 
 export default App;
