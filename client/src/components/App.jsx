@@ -111,7 +111,7 @@ const App = () => {
           <Link href="https://www.cdc.gov/coronavirus/2019-ncov/communication/guidance.html" target="blank">Our safety practices to help keep you healthy</Link>
         </Announcement>
       </Lead>
-      {reviewsMeta !== null
+      {reviewsMeta
       && (
       <Product
         productDetails={productDetails}

@@ -1,12 +1,13 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './client/src/index.jsx',
   output: {
     path: path.resolve(__dirname, './client/dist'),
     filename: 'bundle.js',
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {

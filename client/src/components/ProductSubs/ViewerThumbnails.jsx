@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import FontAwesome from 'react-fontawesome';
 
@@ -86,85 +86,72 @@ const DownArrow = styled.div`
   };
 `;
 
-class ViewerThumbnails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentStyle: null,
-    };
-    this.clickHandler = this.clickHandler.bind(this);
-    this.clickThumbNavHandler = this.clickThumbNavHandler.bind(this);
-  }
+const ViewerThumbnails = (props) => {
+  const {
+    clickedThumb, end, id, images, indexUpdater, start, viewerIndex,
+  } = props;
+  const [style, setStyle] = useState(null);
 
-  componentDidMount() {
-    this.setState({
-      currentStyle: this.props.images[0].name,
-    });
-  }
+  const clickHandler = (event) => {
+    setStyle(event.target.id);
+  };
 
-  clickHandler(event) {
-    this.setState({
-      currentStyle: event.target.id,
-    }, () => this.props.clickedThumb(this.state.currentStyle));
-  }
+  useEffect(() => {
+    clickedThumb(style);
+  }, [style]);
 
-  clickThumbNavHandler(event) {
-    this.props.indexUpdater(Number(event.target.id));
-  }
+  const clickThumbNavHandler = (event) => {
+    indexUpdater(Number(event.target.id));
+  };
 
-  render() {
-    if (this.props.images) {
-      return (
-        <Thumbs>
-
-          {this.props.start !== 0
-          && <UpArrow onClick={this.clickThumbNavHandler}><FontAwesome id="-1" name="angle-up" size="2x" /></UpArrow> }
-          {this.props.start === 0
+  if (images) {
+    return (
+      <Thumbs>
+        {start !== 0
+          && <UpArrow onClick={clickThumbNavHandler}><FontAwesome id="-1" name="angle-up" size="2x" /></UpArrow> }
+        {start === 0
           && <NoArrow><FontAwesome id="-1" name="angle-up" size="2x" /></NoArrow> }
 
-          {this.props.images.map((image, index) => {
-            if (this.props.viewerIndex === Number(index)
-            && Number(index) >= this.props.start
-            && Number(index) <= this.props.end) {
-              return (
-                <div key={image.url}>
-                  <ViewerImageContainer>
-                    <Image
-                      onClick={this.clickHandler}
-                      src={image.thumbnail_url}
-                      alt={this.props.id}
-                      id={index}
-                    />
-                  </ViewerImageContainer>
-                  <Highlight />
-                </div>
-              );
-            }
-
-            if (this.props.viewerIndex !== Number(index)
-            && Number(index) >= this.props.start
-            && Number(index) <= this.props.end) {
-              return (
-                <ImageContainer key={image.url}>
+        {images.map((image, index) => {
+          if (viewerIndex === Number(index)
+            && Number(index) >= start
+            && Number(index) <= end) {
+            return (
+              <div key={image.url}>
+                <ViewerImageContainer>
                   <Image
-                    onClick={this.clickHandler}
+                    onClick={clickHandler}
                     src={image.thumbnail_url}
-                    alt={this.props.id}
+                    alt={id}
                     id={index}
                   />
-                </ImageContainer>
-              );
-            }
-          })}
+                </ViewerImageContainer>
+                <Highlight />
+              </div>
+            );
+          }
 
-          {this.props.end !== this.props.images.length - 1
-          && <DownArrow onClick={this.clickThumbNavHandler}><FontAwesome id="1" name="angle-down" size="2x" /></DownArrow> }
+          if (viewerIndex !== Number(index)
+            && Number(index) >= start
+            && Number(index) <= end) {
+            return (
+              <ImageContainer key={image.url}>
+                <Image
+                  onClick={clickHandler}
+                  src={image.thumbnail_url}
+                  alt={id}
+                  id={index}
+                />
+              </ImageContainer>
+            );
+          }
+        })}
 
-        </Thumbs>
-      );
-    }
-    return <div>.</div>;
+        {end !== images.length - 1
+          && <DownArrow onClick={clickThumbNavHandler}><FontAwesome id="1" name="angle-down" size="2x" /></DownArrow> }
+      </Thumbs>
+    );
   }
-}
+};
 
 export default ViewerThumbnails;

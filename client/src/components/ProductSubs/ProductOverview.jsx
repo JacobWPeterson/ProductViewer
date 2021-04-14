@@ -109,6 +109,7 @@ const ProductOverview = ({
   } else {
     avgRating = '0.0';
   }
+
   return (
     <Wrapper>
 
