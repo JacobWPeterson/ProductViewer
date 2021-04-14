@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import ProductImages from './ProductSubs/ProductImages.jsx';
@@ -35,38 +35,25 @@ const BottomWrapper = styled.div`
   margin-bottom: 5vh;
 `;
 
-class Product extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentStyle: null,
-      stylePhotos: null,
-      skus: null,
-    };
-    this.getStyleID = this.getStyleID.bind(this);
-    this.styleFinder = this.styleFinder.bind(this);
-  }
+const Product = (props) => {
+  const { productDetails, productStyles, reviewsMeta } = props;
 
-  componentDidMount() {
-    this.setState({
-      currentStyle: this.props.productStyles.results[0].style_id,
-      stylePhotos: this.props.productStyles.results[0].photos,
-      skus: this.props.productStyles.results[0].skus,
-      price: this.props.productStyles.results[0].original_price,
-      sale: this.props.productStyles.results[0].sale_price,
-    });
-  }
+  const [currentStyle, setCurrentStyle] = useState(productStyles.results[0].style_id);
+  const [item, setItem] = useState({
+    stylePhotos: productStyles.results[0].photos,
+    skus: productStyles.results[0].skus,
+    price: productStyles.results[0].original_price,
+    sale: productStyles.results[0].sale_price,
+  });
 
-  getStyleID(style) {
-    this.setState({ currentStyle: style }, () => {
-      this.styleFinder(this.state.currentStyle);
-    });
-  }
+  const {
+    stylePhotos, skus, price, sale,
+  } = item;
 
-  styleFinder(style) {
-    this.props.productStyles.results.forEach((image) => {
+  const styleFinder = (style) => {
+    productStyles.results.forEach((image) => {
       if (image.style_id === Number(style)) {
-        this.setState({
+        setItem({
           stylePhotos: image.photos,
           skus: image.skus,
           price: image.original_price,
@@ -74,42 +61,42 @@ class Product extends React.Component {
         });
       }
     });
-  }
+  };
 
-  render() {
-    if (this.state.currentStyle) {
-      return (
-        <Wrapper>
+  const getStyleID = (style) => {
+    setCurrentStyle(style);
+    styleFinder(style);
+  };
 
-          <TopWrapper>
-            <ProductImages
-              images={this.state.stylePhotos}
-              id={this.state.currentStyle}
-            />
-            <ProductOverview
-              details={this.props.productDetails}
-              styles={this.props.productStyles}
-              skus={this.state.skus}
-              getStyleID={this.getStyleID}
-              price={this.state.price}
-              sale={this.state.sale}
-              reviewsMeta={this.props.reviewsMeta}
-            />
-          </TopWrapper>
+  return (
+    <Wrapper>
 
-          <BottomWrapper>
-            <Description info={this.props.productDetails} />
-            <FeaturesList
-              id={this.props.productDetails.id}
-              features={this.props.productDetails.features}
-            />
-          </BottomWrapper>
+      <TopWrapper>
+        <ProductImages
+          images={stylePhotos}
+          id={currentStyle}
+        />
+        <ProductOverview
+          details={productDetails}
+          styles={productStyles}
+          skus={skus}
+          getStyleID={getStyleID}
+          price={price}
+          sale={sale}
+          reviewsMeta={reviewsMeta}
+        />
+      </TopWrapper>
 
-        </Wrapper>
-      );
-    }
-    return <div>empty</div>;
-  }
-}
+      <BottomWrapper>
+        <Description info={productDetails} />
+        <FeaturesList
+          id={productDetails.id}
+          features={productDetails.features}
+        />
+      </BottomWrapper>
+
+    </Wrapper>
+  );
+};
 
 export default Product;
